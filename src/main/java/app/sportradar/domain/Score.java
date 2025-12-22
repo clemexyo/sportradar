@@ -11,7 +11,7 @@ public record Score(int homeScore, int awayScore) {
      * Follows immutability pattern - returns new instance.
      */
     public Score incrementHomeTeamScore() {
-        return null;
+        return new Score(homeScore + 1, awayScore);
     }
 
     /**
@@ -19,6 +19,6 @@ public record Score(int homeScore, int awayScore) {
      * Follows immutability pattern - returns new instance.
      */
     public Score incrementAwayTeamScore() {
-        return null;
+        return new Score(homeScore, awayScore + 1);
     }
 }
