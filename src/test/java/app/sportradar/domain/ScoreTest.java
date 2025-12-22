@@ -225,4 +225,11 @@ class ScoreTest {
 
     assertEquals(expectedMessage, exception.getMessage());
   }
+
+  @Test
+  @DisplayName("isInitial should return true for newly generated score.")
+  void isInitialReturnsTrueForNewlyGeneratedScore() {
+    Score score = Score.initial();
+    assertTrue(score.isInitial());
+  }
 }

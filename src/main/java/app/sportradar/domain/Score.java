@@ -98,6 +98,10 @@ public record Score(int homeScore, int awayScore) {
     return homeScore == awayScore;
   }
 
+  public boolean isInitial() {
+    return homeScore == 0 && awayScore == 0;
+  }
+
   private static void validateScore(int score, String teamType) {
     if (score < MIN_SCORE) {
       throw new IllegalArgumentException(teamType + " score cannot be negative.");
