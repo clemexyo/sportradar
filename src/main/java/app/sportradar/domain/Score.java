@@ -39,12 +39,67 @@ public record Score(int homeScore, int awayScore) {
         return new Score(homeScore, awayScore + 1);
     }
 
+    public Score decrementHomeScore() {
+        return new Score(homeScore - 1, awayScore);
+    }
+
+    public Score decrementAwayScore() {
+        return new Score(homeScore, awayScore - 1);
+    }
+
+    /**
+     * Returns a new Score with home team score incremented by specified amount.
+     * Validation automatically runs in the constructor.
+     */
+    public Score incrementHomeScoreByValue(int amount) {
+        if (amount < 0) {
+            throw new IllegalArgumentException("Increment amount cannot be negative.");
+        }
+        return new Score(homeScore + amount, awayScore);
+    }
+
+    /**
+     * Returns a new Score with away team score incremented by specified amount.
+     * Validation automatically runs in the constructor.
+     */
+    public Score incrementAwayScoreByValue(int amount) {
+        if (amount < 0) {
+            throw new IllegalArgumentException("Increment amount cannot be negative.");
+        }
+        return new Score(homeScore, awayScore + amount);
+    }
+
+    /**
+     * Returns a new Score with home team score decremented by specified amount.
+     * Validation automatically runs in the constructor.
+     */
+    public Score decrementHomeScoreByValue(int amount) {
+        if (amount < 0) {
+            throw new IllegalArgumentException("Increment amount cannot be negative.");
+        }
+        return new Score(homeScore - amount, awayScore);
+    }
+
+    /**
+     * Returns a new Score with away team score decremented by specified amount.
+     * Validation automatically runs in the constructor.
+     */
+    public Score decrementAwayScoreByValue(int amount) {
+        if (amount < 0) {
+            throw new IllegalArgumentException("Increment amount cannot be negative.");
+        }
+        return new Score(homeScore, awayScore - amount);
+    }
 
     /**
      * Return the sum of home team and away team scores.
      */
     public int total() {
         return homeScore + awayScore;
+    }
+
+    public boolean isDraw() {
+        return homeScore == awayScore;
     }
 
     private static void validateScore(int score, String teamType) {
