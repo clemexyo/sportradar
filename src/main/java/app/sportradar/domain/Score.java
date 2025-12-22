@@ -21,4 +21,12 @@ public record Score(int homeScore, int awayScore) {
     public Score incrementAwayTeamScore() {
         return new Score(homeScore, awayScore + 1);
     }
+
+
+    /**
+     * Return the sum of home team and away team scores.
+     */
+    public int total() {
+        return homeScore + awayScore;
+    }
 }

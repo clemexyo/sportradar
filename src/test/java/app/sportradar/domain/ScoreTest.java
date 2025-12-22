@@ -43,4 +43,14 @@ class ScoreTest {
         assertEquals(2, incremented.awayScore());
         assertEquals(1, original.awayScore(), "Original instance must remain unchanged");
     }
+
+    @Test
+    @DisplayName("incrementAway returns a new instance with only away score incremented")
+    void successfullyReturnsTotalScore() {
+        Score score = new Score(4, 1);
+
+        assertEquals(5, score.total());
+    }
+
+
 }
