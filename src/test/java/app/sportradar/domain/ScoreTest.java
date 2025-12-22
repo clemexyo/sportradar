@@ -2,9 +2,11 @@ package app.sportradar.domain;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Score")
 class ScoreTest {
@@ -45,11 +47,40 @@ class ScoreTest {
     }
 
     @Test
-    @DisplayName("incrementAway returns a new instance with only away score incremented")
+    @DisplayName("Score.total return the sum score of two teams")
     void successfullyReturnsTotalScore() {
         Score score = new Score(4, 1);
 
         assertEquals(5, score.total());
+    }
+
+
+    @DisplayName("Throws IllegalArgumentException when home team score values out of bounds.")
+    @ParameterizedTest
+    @CsvSource({
+            "1000, 'score exceeds maximum allowed'",
+            "-5,   'score cannot be negative.'"
+    })    void throwsExceptionWhenHomeTeamScoreValueIsNotValid(int homeScore, String expectedMessage) {
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () -> new Score(homeScore, 5) // just a random valid awayScore here.
+        );
+
+        assertEquals(expectedMessage, exception.getMessage());
+    }
+
+    @DisplayName("Throws IllegalArgumentException when away team score values out of bounds.")
+    @ParameterizedTest
+    @CsvSource({
+            "1000, 'score exceeds maximum allowed'",
+            "-5,   'score cannot be negative.'"
+    })    void throwsExceptionWhenAwayTeamScoreValueIsNotValid(int awayScore, String expectedMessage) {
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () -> new Score(5, awayScore) // just a random valid homeScore here.
+        );
+
+        assertEquals(expectedMessage, exception.getMessage());
     }
 
 
