@@ -4,7 +4,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -58,8 +57,8 @@ class ScoreTest {
     @DisplayName("Throws IllegalArgumentException when home team score values out of bounds.")
     @ParameterizedTest
     @CsvSource({
-            "1000, 'score exceeds maximum allowed'",
-            "-5,   'score cannot be negative.'"
+            "10000, 'Home team score exceeds maximum allowed.'",
+            "-5,   'Home team score cannot be negative.'"
     })    void throwsExceptionWhenHomeTeamScoreValueIsNotValid(int homeScore, String expectedMessage) {
         IllegalArgumentException exception = assertThrows(
                 IllegalArgumentException.class,
@@ -72,8 +71,8 @@ class ScoreTest {
     @DisplayName("Throws IllegalArgumentException when away team score values out of bounds.")
     @ParameterizedTest
     @CsvSource({
-            "1000, 'score exceeds maximum allowed'",
-            "-5,   'score cannot be negative.'"
+            "10000, 'Away team score exceeds maximum allowed.'",
+            "-5,   'Away team score cannot be negative.'"
     })    void throwsExceptionWhenAwayTeamScoreValueIsNotValid(int awayScore, String expectedMessage) {
         IllegalArgumentException exception = assertThrows(
                 IllegalArgumentException.class,
