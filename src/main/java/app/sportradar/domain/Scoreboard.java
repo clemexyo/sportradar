@@ -18,7 +18,7 @@ public class Scoreboard {
 
   public Match findMatch(Match match) {
     int hash = match.hashCode();
-    return matchMap.getOrDefault(hash, match);
+    return matchMap.get(hash);
   }
 
   public void finishMatch(String home, String away, LocalDateTime date) {
