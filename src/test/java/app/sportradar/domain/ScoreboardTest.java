@@ -20,10 +20,11 @@ class ScoreboardTest {
   @DisplayName("starts a match")
   void startsMatch() {
     Scoreboard scoreboard = new Scoreboard();
-    scoreboard.startMatch("home", "away", LocalDateTime.now());
+    LocalDateTime now = LocalDateTime.now();
+    scoreboard.startMatch("home", "away", now);
 
     assertNotNull(scoreboard);
-    assertNotNull(scoreboard.findMatch("home", "away", LocalDateTime.now()));
+    assertNotNull(scoreboard.findMatch("home", "away", now));
   }
 
   @Test
@@ -32,9 +33,9 @@ class ScoreboardTest {
     Match match = TestUtils.createValidMatch();
     Scoreboard scoreboard = new Scoreboard();
     scoreboard.startMatch(match);
-    scoreboard.removeMatch(match);
+    scoreboard.finishMatch(match);
 
     assertNotNull(scoreboard);
-    assertNotNull(scoreboard.findMatch("home", "away", LocalDateTime.now()));
+    assertNull(scoreboard.findMatch("home", "away", match.getStartTime()));
   }
 }
