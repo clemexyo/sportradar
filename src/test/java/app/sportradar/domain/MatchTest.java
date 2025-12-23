@@ -7,6 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import utils.TestUtils;
 
 @DisplayName("Match validation")
 class MatchTest {
@@ -15,7 +16,7 @@ class MatchTest {
   @DisplayName("creates default score when score is null")
   void createsDefaultScoreWhenNullProvided() {
 
-    Match match = createValidMatch();
+    Match match = TestUtils.createValidMatch();
 
     assertEquals("Home", match.getHomeTeam());
     assertEquals("Away", match.getAwayTeam());
@@ -28,7 +29,7 @@ class MatchTest {
   @ValueSource(strings = {"", "   "})
   @DisplayName("home team must not be blank")
   void homeTeamMustNotBeBlank(String invalid) {
-    Match.MatchBuilder matchBuilder = createValidMatch().toBuilder().homeTeam(invalid);
+    Match.MatchBuilder matchBuilder = TestUtils.createValidMatch().toBuilder().homeTeam(invalid);
     IllegalArgumentException exception =
         assertThrows(IllegalArgumentException.class, matchBuilder::build);
 
@@ -39,7 +40,7 @@ class MatchTest {
   @ValueSource(strings = {"", "   "})
   @DisplayName("away team must not be blank")
   void awayTeamMustNotBeBlank(String invalid) {
-    Match.MatchBuilder matchBuilder = createValidMatch().toBuilder().awayTeam(invalid);
+    Match.MatchBuilder matchBuilder = TestUtils.createValidMatch().toBuilder().awayTeam(invalid);
     IllegalArgumentException exception =
         assertThrows(IllegalArgumentException.class, matchBuilder::build);
 
@@ -49,7 +50,7 @@ class MatchTest {
   @Test
   @DisplayName("validation rejects null start time")
   void validationRejectsNullStartTime() {
-    Match.MatchBuilder matchBuilder = createValidMatch().toBuilder().startTime(null);
+    Match.MatchBuilder matchBuilder = TestUtils.createValidMatch().toBuilder().startTime(null);
     IllegalArgumentException exception =
         assertThrows(IllegalArgumentException.class, matchBuilder::build);
 
@@ -60,7 +61,7 @@ class MatchTest {
   @DisplayName("validation rejects same team names ignoring case and whitespace")
   void validationRejectsSameTeams() {
     Match.MatchBuilder matchBuilder =
-        createValidMatch().toBuilder().homeTeam(" Team ").awayTeam("team");
+        TestUtils.createValidMatch().toBuilder().homeTeam(" Team ").awayTeam("team");
     IllegalArgumentException exception =
         assertThrows(IllegalArgumentException.class, matchBuilder::build);
 
@@ -87,7 +88,7 @@ class MatchTest {
   @Test
   @DisplayName("equals/hashCode differ when a team or start time changes")
   void equalsAndHashCodeDifferWhenKeyFieldsChange() {
-    Match reference = createValidMatch();
+    Match reference = TestUtils.createValidMatch();
 
     Match differentTeam = reference.toBuilder().homeTeam("Different").build();
     Match differentStart =
@@ -98,15 +99,5 @@ class MatchTest {
 
     assertNotEquals(reference, differentStart);
     assertNotEquals(reference.hashCode(), differentStart.hashCode());
-  }
-
-  private Match createValidMatch() {
-    LocalDateTime startTime = LocalDateTime.now().plusHours(1);
-    return Match.builder()
-        .homeTeam(" Home ")
-        .awayTeam(" Away ")
-        .score(Score.initial())
-        .startTime(startTime)
-        .build();
   }
 }
