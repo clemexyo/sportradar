@@ -388,4 +388,66 @@ class ScoreboardTest {
     assertNotNull(summary);
     assertTrue(summary.isEmpty());
   }
+
+  @Test
+  @DisplayName("updateScore with Match sets absolute home and away scores.")
+  void updateScoreWithMatchSetsAbsoluteScores() {
+    Match match = TestUtils.createValidMatch();
+    Scoreboard scoreboard = new Scoreboard();
+    scoreboard.startMatch(match);
+
+    Match updated = scoreboard.updateScore(match, 3, 2);
+
+    assertEquals(3, updated.getScore().homeScore());
+    assertEquals(2, updated.getScore().awayScore());
+    assertSame(updated, scoreboard.findMatch(match));
+  }
+
+  @Test
+  @DisplayName("updateScore with identifiers sets absolute home and away scores.")
+  void updateScoreWithIdentifiersSetsAbsoluteScores() {
+    Scoreboard scoreboard = new Scoreboard();
+    LocalDateTime start = LocalDateTime.now();
+    scoreboard.startMatch("Home", "Away", start);
+
+    Match updated = scoreboard.updateScore("Home", "Away", start, 5, 4);
+
+    assertEquals(5, updated.getScore().homeScore());
+    assertEquals(4, updated.getScore().awayScore());
+    assertSame(updated, scoreboard.findMatch("Home", "Away", start));
+  }
+
+  @Test
+  @DisplayName("updateScore replaces previous score completely.")
+  void updateScoreReplacesPreviousScore() {
+    Match match = TestUtils.createValidMatch();
+    Scoreboard scoreboard = new Scoreboard();
+    scoreboard.startMatch(match);
+    scoreboard.incrementHomeScoreByValue(match, 10);
+
+    Match updated = scoreboard.updateScore(match, 1, 1);
+
+    assertEquals(1, updated.getScore().homeScore());
+    assertEquals(1, updated.getScore().awayScore());
+  }
+
+  @Test
+  @DisplayName("updateScore throws exception when match does not exist.")
+  void updateScoreThrowsWhenMatchDoesNotExist() {
+    Scoreboard scoreboard = new Scoreboard();
+    Match match = TestUtils.createValidMatch();
+
+    assertThrows(IllegalArgumentException.class, () -> scoreboard.updateScore(match, 1, 0));
+  }
+
+  @Test
+  @DisplayName("updateScore throws exception for negative scores.")
+  void updateScoreThrowsForNegativeScores() {
+    Match match = TestUtils.createValidMatch();
+    Scoreboard scoreboard = new Scoreboard();
+    scoreboard.startMatch(match);
+
+    assertThrows(IllegalArgumentException.class, () -> scoreboard.updateScore(match, -1, 0));
+    assertThrows(IllegalArgumentException.class, () -> scoreboard.updateScore(match, 0, -1));
+  }
 }

@@ -119,6 +119,17 @@ public class Scoreboard {
     return updateScore(home, away, date, score -> score.decrementAwayScoreByValue(amount));
   }
 
+  public Match updateScore(Match match, int homeScore, int awayScore) {
+    // TODO: implement
+    return null;
+  }
+
+  public Match updateScore(
+      String home, String away, LocalDateTime date, int homeScore, int awayScore) {
+    // TODO: implement
+    return null;
+  }
+
   private Match updateScore(Match match, UnaryOperator<Score> scoreUpdater) {
     Match storedMatch = requireMatch(match);
     return persistUpdatedMatch(storedMatch, scoreUpdater);
