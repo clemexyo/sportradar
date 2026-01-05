@@ -97,12 +97,14 @@ class ScoreboardTest {
     Scoreboard scoreboard = new Scoreboard();
     scoreboard.startMatch(match);
     Match incremented = scoreboard.incrementHomeScoreByValue(match, 2);
+    assertEquals(2, incremented.getScore().homeScore());
+    assertEquals(0, incremented.getScore().awayScore());
+    assertNotSame(match, incremented, "even though credentials are the same these are different object references, one has updated state..");
 
     Match decremented = scoreboard.decrementHomeScore(incremented);
-
     assertEquals(1, decremented.getScore().homeScore());
     assertEquals(0, decremented.getScore().awayScore());
-    assertSame(decremented, scoreboard.findMatch(match));
+    assertSame(decremented, scoreboard.findMatch(match), "lookup by original match credentials should find the updated version.");
   }
 
   @Test

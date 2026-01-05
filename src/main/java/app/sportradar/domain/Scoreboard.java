@@ -133,7 +133,7 @@ public class Scoreboard {
     }
     Match storedMatch = findMatch(match);
     if (storedMatch == null) {
-      log.error("Match does not exist on the scoreboard.");
+      log.info("Match does not exist on the scoreboard.");
       throw new IllegalArgumentException("Match does not exist on the scoreboard.");
     }
     return storedMatch;
