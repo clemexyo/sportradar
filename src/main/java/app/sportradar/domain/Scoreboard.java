@@ -1,6 +1,7 @@
 package app.sportradar.domain;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -17,8 +18,13 @@ public class Scoreboard {
     // no explicit constructor is needed for this data structure.
   }
 
-  public List<Match> getSummary(){
-    return null;
+  public List<Match> getSummary() {
+    return matchMap.values().stream()
+        .sorted(
+            Comparator.comparingInt((Match m) -> m.getScore().total())
+                .reversed()
+                .thenComparing(Comparator.comparing(Match::getStartTime).reversed()))
+        .toList();
   }
 
   public Match findMatch(String home, String away, LocalDateTime date) {
