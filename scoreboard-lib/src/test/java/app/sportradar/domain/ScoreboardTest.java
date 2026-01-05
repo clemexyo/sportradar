@@ -138,7 +138,7 @@ class ScoreboardTest {
       "getSummary returns matches ordered by total score descending, then by start time descending.")
   void getSummaryReturnsMatchesOrderedByTotalScoreThenByStartTime() {
     Scoreboard scoreboard = new Scoreboard();
-    LocalDateTime baseTime = LocalDateTime.of(2024, 1, 1, 12, 0);
+    LocalDateTime baseTime = LocalDateTime.of(2026, 1, 1, 12, 0);
 
     // Start matches in chronological order
     scoreboard.startMatch("Mexico", "Canada", baseTime);
@@ -375,8 +375,7 @@ class ScoreboardTest {
   void updateOperationsThrowWhenMatchIsNull() {
     Scoreboard scoreboard = new Scoreboard();
 
-    assertThrows(
-        IllegalArgumentException.class, () -> scoreboard.incrementHomeTeamScore(null));
+    assertThrows(IllegalArgumentException.class, () -> scoreboard.incrementHomeTeamScore(null));
   }
 
   @Test

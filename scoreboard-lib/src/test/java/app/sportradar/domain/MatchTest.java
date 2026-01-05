@@ -76,7 +76,7 @@ class MatchTest {
             .homeTeam("Home")
             .awayTeam("Away")
             .score(Score.initial())
-            .startTime(LocalDateTime.of(2024, 1, 1, 12, 0))
+            .startTime(LocalDateTime.of(2026, 1, 1, 12, 0))
             .build();
 
     Match sameIdentifiersDifferentScore = baseMatch.toBuilder().score(new Score(5, 4)).build();
