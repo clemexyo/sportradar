@@ -178,4 +178,215 @@ class ScoreboardTest {
     assertEquals("Argentina", summary.get(3).getHomeTeam());
     assertEquals("Germany", summary.get(4).getHomeTeam());
   }
+
+  @Test
+  @DisplayName("incrementHomeTeamScore using identifiers updates and persists the match.")
+  void incrementHomeTeamScoreUsingIdentifiersUpdatesScore() {
+    Scoreboard scoreboard = new Scoreboard();
+    LocalDateTime start = LocalDateTime.now();
+    scoreboard.startMatch("Home", "Away", start);
+
+    Match updated = scoreboard.incrementHomeTeamScore("Home", "Away", start);
+
+    assertEquals(1, updated.getScore().homeScore());
+    assertEquals(0, updated.getScore().awayScore());
+    assertSame(updated, scoreboard.findMatch("Home", "Away", start));
+  }
+
+  @Test
+  @DisplayName("incrementAwayTeamScore using Match updates and persists the match.")
+  void incrementAwayTeamScoreUsingMatchUpdatesScore() {
+    Match match = TestUtils.createValidMatch();
+    Scoreboard scoreboard = new Scoreboard();
+    scoreboard.startMatch(match);
+
+    Match updated = scoreboard.incrementAwayTeamScore(match);
+
+    assertEquals(0, updated.getScore().homeScore());
+    assertEquals(1, updated.getScore().awayScore());
+    assertSame(updated, scoreboard.findMatch(match));
+  }
+
+  @Test
+  @DisplayName("incrementAwayTeamScore using identifiers updates and persists the match.")
+  void incrementAwayTeamScoreUsingIdentifiersUpdatesScore() {
+    Scoreboard scoreboard = new Scoreboard();
+    LocalDateTime start = LocalDateTime.now();
+    scoreboard.startMatch("Home", "Away", start);
+
+    Match updated = scoreboard.incrementAwayTeamScore("Home", "Away", start);
+
+    assertEquals(0, updated.getScore().homeScore());
+    assertEquals(1, updated.getScore().awayScore());
+    assertSame(updated, scoreboard.findMatch("Home", "Away", start));
+  }
+
+  @Test
+  @DisplayName("incrementHomeScoreByValue using identifiers applies the provided amount.")
+  void incrementHomeScoreByValueUsingIdentifiersUpdatesScore() {
+    Scoreboard scoreboard = new Scoreboard();
+    LocalDateTime start = LocalDateTime.now();
+    scoreboard.startMatch("Home", "Away", start);
+
+    Match updated = scoreboard.incrementHomeScoreByValue("Home", "Away", start, 5);
+
+    assertEquals(5, updated.getScore().homeScore());
+    assertEquals(0, updated.getScore().awayScore());
+    assertSame(updated, scoreboard.findMatch("Home", "Away", start));
+  }
+
+  @Test
+  @DisplayName("incrementAwayScoreByValue using Match applies the provided amount.")
+  void incrementAwayScoreByValueUsingMatchUpdatesScore() {
+    Match match = TestUtils.createValidMatch();
+    Scoreboard scoreboard = new Scoreboard();
+    scoreboard.startMatch(match);
+
+    Match updated = scoreboard.incrementAwayScoreByValue(match, 4);
+
+    assertEquals(0, updated.getScore().homeScore());
+    assertEquals(4, updated.getScore().awayScore());
+    assertSame(updated, scoreboard.findMatch(match));
+  }
+
+  @Test
+  @DisplayName("decrementHomeScore using identifiers reduces the score.")
+  void decrementHomeScoreUsingIdentifiersReducesScore() {
+    Scoreboard scoreboard = new Scoreboard();
+    LocalDateTime start = LocalDateTime.now();
+    scoreboard.startMatch("Home", "Away", start);
+    scoreboard.incrementHomeScoreByValue("Home", "Away", start, 3);
+
+    Match decremented = scoreboard.decrementHomeScore("Home", "Away", start);
+
+    assertEquals(2, decremented.getScore().homeScore());
+    assertEquals(0, decremented.getScore().awayScore());
+  }
+
+  @Test
+  @DisplayName("decrementAwayScore using Match reduces the score and returns updated match.")
+  void decrementAwayScoreUsingMatchReducesScore() {
+    Match match = TestUtils.createValidMatch();
+    Scoreboard scoreboard = new Scoreboard();
+    scoreboard.startMatch(match);
+    Match incremented = scoreboard.incrementAwayScoreByValue(match, 2);
+
+    Match decremented = scoreboard.decrementAwayScore(incremented);
+
+    assertEquals(0, decremented.getScore().homeScore());
+    assertEquals(1, decremented.getScore().awayScore());
+    assertSame(decremented, scoreboard.findMatch(match));
+  }
+
+  @Test
+  @DisplayName("decrementAwayScore using identifiers reduces the score.")
+  void decrementAwayScoreUsingIdentifiersReducesScore() {
+    Scoreboard scoreboard = new Scoreboard();
+    LocalDateTime start = LocalDateTime.now();
+    scoreboard.startMatch("Home", "Away", start);
+    scoreboard.incrementAwayScoreByValue("Home", "Away", start, 3);
+
+    Match decremented = scoreboard.decrementAwayScore("Home", "Away", start);
+
+    assertEquals(0, decremented.getScore().homeScore());
+    assertEquals(2, decremented.getScore().awayScore());
+  }
+
+  @Test
+  @DisplayName("decrementHomeScoreByValue using Match reduces the score by amount.")
+  void decrementHomeScoreByValueUsingMatchReducesScore() {
+    Match match = TestUtils.createValidMatch();
+    Scoreboard scoreboard = new Scoreboard();
+    scoreboard.startMatch(match);
+    Match incremented = scoreboard.incrementHomeScoreByValue(match, 5);
+
+    Match decremented = scoreboard.decrementHomeScoreByValue(incremented, 3);
+
+    assertEquals(2, decremented.getScore().homeScore());
+    assertEquals(0, decremented.getScore().awayScore());
+  }
+
+  @Test
+  @DisplayName("decrementHomeScoreByValue using identifiers reduces the score by amount.")
+  void decrementHomeScoreByValueUsingIdentifiersReducesScore() {
+    Scoreboard scoreboard = new Scoreboard();
+    LocalDateTime start = LocalDateTime.now();
+    scoreboard.startMatch("Home", "Away", start);
+    scoreboard.incrementHomeScoreByValue("Home", "Away", start, 5);
+
+    Match decremented = scoreboard.decrementHomeScoreByValue("Home", "Away", start, 2);
+
+    assertEquals(3, decremented.getScore().homeScore());
+    assertEquals(0, decremented.getScore().awayScore());
+  }
+
+  @Test
+  @DisplayName("decrementAwayScoreByValue using Match reduces the score by amount.")
+  void decrementAwayScoreByValueUsingMatchReducesScore() {
+    Match match = TestUtils.createValidMatch();
+    Scoreboard scoreboard = new Scoreboard();
+    scoreboard.startMatch(match);
+    Match incremented = scoreboard.incrementAwayScoreByValue(match, 5);
+
+    Match decremented = scoreboard.decrementAwayScoreByValue(incremented, 3);
+
+    assertEquals(0, decremented.getScore().homeScore());
+    assertEquals(2, decremented.getScore().awayScore());
+  }
+
+  @Test
+  @DisplayName("decrementAwayScoreByValue using identifiers reduces the score by amount.")
+  void decrementAwayScoreByValueUsingIdentifiersReducesScore() {
+    Scoreboard scoreboard = new Scoreboard();
+    LocalDateTime start = LocalDateTime.now();
+    scoreboard.startMatch("Home", "Away", start);
+    scoreboard.incrementAwayScoreByValue("Home", "Away", start, 5);
+
+    Match decremented = scoreboard.decrementAwayScoreByValue("Home", "Away", start, 2);
+
+    assertEquals(0, decremented.getScore().homeScore());
+    assertEquals(3, decremented.getScore().awayScore());
+  }
+
+  @Test
+  @DisplayName("finishMatch using identifiers removes the match from the board.")
+  void finishMatchUsingIdentifiersRemovesMatch() {
+    Scoreboard scoreboard = new Scoreboard();
+    LocalDateTime start = LocalDateTime.now();
+    scoreboard.startMatch("Home", "Away", start);
+
+    scoreboard.finishMatch("Home", "Away", start);
+
+    assertNull(scoreboard.findMatch("Home", "Away", start));
+  }
+
+  @Test
+  @DisplayName("findMatch returns null when match does not exist.")
+  void findMatchReturnsNullWhenMatchDoesNotExist() {
+    Scoreboard scoreboard = new Scoreboard();
+    Match match = TestUtils.createValidMatch();
+
+    assertNull(scoreboard.findMatch(match));
+    assertNull(scoreboard.findMatch("nonexistent", "teams", LocalDateTime.now()));
+  }
+
+  @Test
+  @DisplayName("update operations throw exception when match is null.")
+  void updateOperationsThrowWhenMatchIsNull() {
+    Scoreboard scoreboard = new Scoreboard();
+
+    assertThrows(
+        IllegalArgumentException.class, () -> scoreboard.incrementHomeTeamScore(null));
+  }
+
+  @Test
+  @DisplayName("getSummary returns empty list when scoreboard has no matches.")
+  void getSummaryReturnsEmptyListWhenNoMatches() {
+    Scoreboard scoreboard = new Scoreboard();
+
+    List<Match> summary = scoreboard.getSummary();
+
+    assertNotNull(summary);
+    assertTrue(summary.isEmpty());
+  }
 }
