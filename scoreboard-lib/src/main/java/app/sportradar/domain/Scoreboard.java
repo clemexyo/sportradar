@@ -120,14 +120,21 @@ public class Scoreboard {
   }
 
   public Match updateScore(Match match, int homeScore, int awayScore) {
-    // TODO: implement
-    return null;
+    Match storedMatch = requireMatch(match);
+    return persistUpdatedMatch(storedMatch, homeScore, awayScore);
   }
 
   public Match updateScore(
       String home, String away, LocalDateTime date, int homeScore, int awayScore) {
-    // TODO: implement
-    return null;
+    Match storedMatch = requireMatch(home, away, date);
+    return persistUpdatedMatch(storedMatch, homeScore, awayScore);
+  }
+
+  private Match persistUpdatedMatch(Match match, int homeScore, int awayScore) {
+    Score updatedScore = new Score(homeScore, awayScore);
+    Match updatedMatch = match.toBuilder().score(updatedScore).build();
+    matchMap.put(updatedMatch.hashCode(), updatedMatch);
+    return updatedMatch;
   }
 
   private Match updateScore(Match match, UnaryOperator<Score> scoreUpdater) {

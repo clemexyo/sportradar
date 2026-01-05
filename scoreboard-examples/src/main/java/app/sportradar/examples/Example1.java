@@ -2,10 +2,9 @@ package app.sportradar.examples;
 
 import app.sportradar.domain.Match;
 import app.sportradar.domain.Scoreboard;
-import lombok.extern.slf4j.Slf4j;
-
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Example1 {
@@ -47,7 +46,8 @@ public class Example1 {
     List<Match> summary = scoreboard.getSummary();
     int position = 1;
     for (Match match : summary) {
-      log.info("{}. {} {} - {} {}",
+      log.info(
+          "{}. {} {} - {} {}",
           position++,
           match.getHomeTeam(),
           match.getScore().homeScore(),
@@ -63,7 +63,8 @@ public class Example1 {
     summary = scoreboard.getSummary();
     position = 1;
     for (Match match : summary) {
-      log.info("{}. {} {} - {} {}",
+      log.info(
+          "{}. {} {} - {} {}",
           position++,
           match.getHomeTeam(),
           match.getScore().homeScore(),
