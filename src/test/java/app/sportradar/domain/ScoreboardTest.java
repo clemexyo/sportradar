@@ -96,9 +96,9 @@ class ScoreboardTest {
     Match match = TestUtils.createValidMatch();
     Scoreboard scoreboard = new Scoreboard();
     scoreboard.startMatch(match);
-    scoreboard.incrementHomeScoreByValue(match, 2);
+    Match incremented = scoreboard.incrementHomeScoreByValue(match, 2);
 
-    Match decremented = scoreboard.decrementHomeScore(match);
+    Match decremented = scoreboard.decrementHomeScore(incremented);
 
     assertEquals(1, decremented.getScore().homeScore());
     assertEquals(0, decremented.getScore().awayScore());

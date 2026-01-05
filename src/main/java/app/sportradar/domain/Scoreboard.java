@@ -3,14 +3,19 @@ package app.sportradar.domain;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.UnaryOperator;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 @Getter
+@Slf4j
 public class Scoreboard {
-  private final Map<Integer, Match> matchMap = new HashMap<>();
+  private final Map<Integer, Match> matchMap = new ConcurrentHashMap<>();
 
-  public Scoreboard() {}
+  public Scoreboard() {
+    // no explicit constructor is needed for this data structure.
+  }
 
   public Match findMatch(String home, String away, LocalDateTime date) {
     int hash = Match.builder().homeTeam(home).awayTeam(away).startTime(date).build().hashCode();
@@ -128,6 +133,7 @@ public class Scoreboard {
     }
     Match storedMatch = findMatch(match);
     if (storedMatch == null) {
+      log.error("Match does not exist on the scoreboard.");
       throw new IllegalArgumentException("Match does not exist on the scoreboard.");
     }
     return storedMatch;
