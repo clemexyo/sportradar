@@ -1,7 +1,7 @@
 package app.sportradar.domain;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.UnaryOperator;
@@ -15,6 +15,10 @@ public class Scoreboard {
 
   public Scoreboard() {
     // no explicit constructor is needed for this data structure.
+  }
+
+  public List<Match> getSummary(){
+    return null;
   }
 
   public Match findMatch(String home, String away, LocalDateTime date) {
